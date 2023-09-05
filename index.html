@@ -9,8 +9,17 @@
 </head>
 <body>
     <h2>Rock, Paper, Scissors!</h2>
+    <input type="button" value="Restart Game!" id="startGame" onclick="restart()">
     <p>What would you like to play?</p>
     <input id="playerOption">
-    <input type="button" value="Submit" onclick="getPlayerChoice()">
+    <input type="button" value="Submit" id="playerSubmit" onclick="game()">
+    <p>You Won: </p>
+    <span id="playerWinCount"></span>
+    <p>Computer Won: </p>
+    <span id="computerWinCount"></span>
+    <p>
+        Rounds
+        <ol id="rounds"></ol>
+    </p>
 </body>
 </html>
