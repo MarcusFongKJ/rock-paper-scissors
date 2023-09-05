@@ -43,6 +43,14 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
+// Function to add outcome to list
+function outcome(message) {
+    let roundsList = document.getElementById("rounds");
+    let li = document.createElement('li');
+    li.innerText = message;
+    roundsList.appendChild(li);
+}
+
 // Function to play game
 let playerWinCount = 0, computerWinCount = 0;
 function game() {  
@@ -51,26 +59,20 @@ function game() {
         alert("Enter a valid choice");
         return;
     }
-    let roundsList = document.getElementById("rounds");
+    
     let playerWin = document.getElementById("playerWinCount");
     let computerWin = document.getElementById("computerWinCount");
     let player = getPlayerChoice();
     let computer = getComputerChoice();
 
     if (playRound(player, computer) == "Win") {
-        let li = document.createElement('li');
-        li.innerText = `You Won! You played ${player} while Computer played ${computer}.`;
-        roundsList.appendChild(li);
+        outcome(`You Won! You played ${player} while Computer played ${computer}.`);
         playerWinCount++;
     }  else if (playRound(player, computer) == "Lose") {
-        let li = document.createElement('li');
-        li.innerText = `You Lost! Computer played ${computer} while you played ${player}.`;
-        roundsList.appendChild(li);
+        outcome(`You Lost! Computer played ${computer} while you played ${player}.`);
         computerWinCount++;
     } else {
-        let li = document.createElement('li');
-        li.innerText = `You Drew! Both you and Computer played ${computer}.`;
-        roundsList.appendChild(li);
+        outcome(`It's a Draw! Both you and Computer played ${computer}.`);
     }
 
     playerWin.innerHTML = playerWinCount;
