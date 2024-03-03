@@ -1,0 +1,27 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.menuOptions {
+    display: flex;
+    align-self: center;
+}
+
+button {
+    margin: 0px 10px;
+}
+
+#resetGame {
+    margin-right: 0;
+}
+
+#optionDiv {
+    display: flex;
+    justify-content: center;
+}
+
+/* .body {
+    display: flex;
+    flex-direction: column;
+} */

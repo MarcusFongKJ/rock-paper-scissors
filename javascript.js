@@ -7,41 +7,94 @@ function getComputerChoice() {
     return computerSelection;
 }
 
-// Function to get player choice
-function getPlayerChoice() {
-    let playerSelection = document.getElementById("playerOption").value;
-    playerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();
-    return playerSelection;
-}
+// Variables
+const startBtn = document.querySelector('#startBtn');
+const divBody = document.querySelector('.body');
 
-// Function to check if player choice is valid
-function validPlayerChoice() {
-    let choice = getPlayerChoice();
-    if (options.includes(choice)) {
-        return true;
-    } else {
-        return false;
-    }
-}
+// Function to create option for player to choose
+function createOption(optionValue) {
+    let option = document.createElement('button');
+    option.textContent = optionValue;
+    option.setAttribute('id', optionValue);
+    return option;
+};
 
-// Function to play the game
+// Function to create all Rock, Paper, Scissors options
+function createOptions() {
+    let optionDiv = document.createElement('div');
+    optionDiv.id = 'optionDiv';
+
+    let rockOption = createOption('Rock');
+    let paperOption = createOption('Paper');
+    let scissorsOption = createOption('Scissors');
+
+    optionDiv.appendChild(rockOption);
+    optionDiv.appendChild(paperOption);
+    optionDiv.appendChild(scissorsOption);
+
+    divBody.appendChild(optionDiv);
+};
+
+
+// Start the game
+let gameStart = function() {
+
+    // Create options for player to choose
+    createOptions();
+
+    // Get player choice and play round
+    let rockSelection = document.querySelector('#Rock');
+    let paperSelection = document.querySelector('#Paper');
+    let scissorsSelection = document.querySelector('#Scissors');
+
+    let playerWinCount = 0, computerWinCount = 0;
+
+    rockSelection.addEventListener('click', function() {
+        playRound('Rock', getComputerChoice());
+    });
+
+    paperSelection.addEventListener('click', function() {
+        playRound('Paper', getComputerChoice());
+    });
+
+    scissorsSelection.addEventListener('click', function() {
+        playRound('Scissors', getComputerChoice());
+    }); 
+
+};
+
+startBtn.addEventListener('click', gameStart);
+
+
+// Function to decide winner of round
 function playRound(playerSelection, computerSelection) {
+
+    console.log('P: ', playerSelection, 'C: ', computerSelection);
+
+    let playerWin = document.getElementById("playerWinCount");
+    let computerWin = document.getElementById("computerWinCount");
+
     // Check Draw condition
     if (playerSelection == computerSelection) {
-        return "Draw";
+        console.log("Draw");
+        return;
     }
 
     // Check Win condition (if not satisfied, game is lost)
-    if (playerSelection == "Rock" && computerSelection == "Scissors") {
-        return "Win";
-    } else if (playerSelection == "Paper" && computerSelection == "Rock") {
-        return "Win";
-    } else if (playerSelection == "Scissors" && computerSelection == "Paper") {
-        return "Win";
+    const winningCombinations = {
+        'Rock': 'Scissors',
+        'Paper': 'Rock',
+        'Scissors': 'Paper'
+    };
+    if (winningCombinations[playerSelection] == computerSelection) {
+        console.log('Win');
+        playerWinCount++;
+        playerWin++;
+
     } else {
-        return "Lose";
+        console.log('Lose');
     }
-}
+};
 
 // Function to add outcome to list
 function outcome(message) {
@@ -52,14 +105,9 @@ function outcome(message) {
 }
 
 // Function to play game
-let playerWinCount = 0, computerWinCount = 0;
+// let playerWinCount = 0, computerWinCount = 0;
 function game() {  
-    // if player's choice is invalid, exit game
-    if (! validPlayerChoice()) {
-        alert("Enter a valid choice");
-        return;
-    }
-    
+
     let playerWin = document.getElementById("playerWinCount");
     let computerWin = document.getElementById("computerWinCount");
     let player = getPlayerChoice();
