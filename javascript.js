@@ -1,3 +1,15 @@
+// Variables
+const startResetBtn = document.querySelector('#startResetBtn');
+const leftBody = document.querySelector('.leftBody');
+const midBody = document.querySelector('.midBody');
+const rightBody = document.querySelector('.rightBody');
+const playerChoice = document.querySelector("#pChoice");
+const computerChoice = document.querySelector("#cChoice");
+const roundOutcome = document.querySelector("#roundOutcome");
+let playerHealthCount = 5;
+let computerHealthCount = 5;
+
+
 // Array of options that are valid
 const options = ["Rock", "Paper", "Scissors"];
 
@@ -7,15 +19,22 @@ function getComputerChoice() {
     return computerSelection;
 }
 
-// Variables
-const startBtn = document.querySelector('#startBtn');
-const divBody = document.querySelector('.body');
 
 // Function to create option for player to choose
 function createOption(optionValue) {
+
+    // Create Button
     let option = document.createElement('button');
-    option.textContent = optionValue;
     option.setAttribute('id', optionValue);
+
+    // Attach Image
+    let image = document.createElement('img');
+    image.src = '/images/' + optionValue.toLowerCase()+'-clipart.png';
+    image.alt = 'Image of ' + optionValue;
+    image.style.width = '100%';
+    image.style.height = '100%';
+    option.appendChild(image);
+
     return option;
 };
 
@@ -24,59 +43,85 @@ function createOptions() {
     let optionDiv = document.createElement('div');
     optionDiv.id = 'optionDiv';
 
-    let rockOption = createOption('Rock');
-    let paperOption = createOption('Paper');
-    let scissorsOption = createOption('Scissors');
+    let rockBtn = createOption('Rock');
+    let paperBtn = createOption('Paper');
+    let scissorsBtn = createOption('Scissors');
 
-    optionDiv.appendChild(rockOption);
-    optionDiv.appendChild(paperOption);
-    optionDiv.appendChild(scissorsOption);
+    optionDiv.appendChild(rockBtn);
+    optionDiv.appendChild(paperBtn);
+    optionDiv.appendChild(scissorsBtn);
 
-    divBody.appendChild(optionDiv);
+    // midBody.appendChild(optionDiv);
+    midBody.insertBefore(optionDiv, roundOutcome);
 };
 
 
-// Start the game
-let gameStart = function() {
+// Function to create Player and Computer Profiles
+function createProfiles() {
+    // Player Health Background
+    let playerHealthBackground = document.createElement("div");
+    playerHealthBackground.id = 'playerHealthBackground';
+    leftBody.appendChild(playerHealthBackground);
 
-    // Create options for player to choose
-    createOptions();
+    // Player Health
+    let playerHealth = document.createElement("div");
+    playerHealth.id = 'playerHealth';
+    playerHealthBackground.appendChild(playerHealth);
 
+    // Computer Health Background
+    let computerHealthBackground = document.createElement("div");
+    computerHealthBackground.id = 'computerHealthBackground';
+    rightBody.appendChild(computerHealthBackground);
+
+    // Computer Health
+    let computerHealth = document.createElement("div");
+    computerHealth.id = 'computerHealth';
+    computerHealthBackground.appendChild(computerHealth);
+
+}
+
+// Function to Start/Reset the Game
+let gameStartReset = function() {
+
+    // Update button to Reset once Game starts, or Start when Game is Reset
+    if (startResetBtn.textContent == 'Start!') {
+        startResetBtn.textContent = 'Reset!';
+        createOptions();
+        createProfiles()
+    } else {
+        startResetBtn.textContent = 'Start!';
+        restart()
+        return;
+    }
+    
     // Get player choice and play round
-    let rockSelection = document.querySelector('#Rock');
-    let paperSelection = document.querySelector('#Paper');
-    let scissorsSelection = document.querySelector('#Scissors');
+    let rockBtn = document.querySelector('#Rock');
+    let paperBtn = document.querySelector('#Paper');
+    let scissorsBtn = document.querySelector('#Scissors');
 
-    let playerWinCount = 0, computerWinCount = 0;
-
-    rockSelection.addEventListener('click', function() {
+    rockBtn.addEventListener('click', function() {
         playRound('Rock', getComputerChoice());
     });
 
-    paperSelection.addEventListener('click', function() {
+    paperBtn.addEventListener('click', function() {
         playRound('Paper', getComputerChoice());
     });
 
-    scissorsSelection.addEventListener('click', function() {
+    scissorsBtn.addEventListener('click', function() {
         playRound('Scissors', getComputerChoice());
     }); 
 
 };
 
-startBtn.addEventListener('click', gameStart);
 
-
-// Function to decide winner of round
+// Function to decide winner of round, add outcome and check for game winner
 function playRound(playerSelection, computerSelection) {
 
     console.log('P: ', playerSelection, 'C: ', computerSelection);
 
-    let playerWin = document.getElementById("playerWinCount");
-    let computerWin = document.getElementById("computerWinCount");
-
     // Check Draw condition
     if (playerSelection == computerSelection) {
-        console.log("Draw");
+        outcome(`It's a Draw! Both You and Computer played ${playerSelection}.`);
         return;
     }
 
@@ -86,62 +131,91 @@ function playRound(playerSelection, computerSelection) {
         'Paper': 'Rock',
         'Scissors': 'Paper'
     };
-    if (winningCombinations[playerSelection] == computerSelection) {
-        console.log('Win');
-        playerWinCount++;
-        playerWin++;
 
+    if (winningCombinations[playerSelection] == computerSelection) {
+        // If player won, computer loses health
+        computerHealthCount--;
+        takeDamage('Computer', computerHealthCount);
+        if (computerHealthCount == 0) {
+            displayWinner('You');
+        } else {
+            outcome(`You Won! You played ${playerSelection} while Computer played ${computerSelection}.`);
+        }
     } else {
-        console.log('Lose');
+        playerHealthCount--;
+        takeDamage('Player', playerHealthCount);
+        if (playerHealthCount == 0) {
+            displayWinner('Computer');
+        } else {
+            outcome(`You Lost! You played ${playerSelection} while Computer played ${computerSelection}.`);
+        }
     }
 };
 
+
+// Function to change health bar
+function takeDamage(damaged, remainingHealthPoints) {
+
+    let healthBar;
+    if (damaged == 'Player') {
+        healthBar = document.querySelector('#playerHealth');
+    } else {
+        healthBar = document.querySelector('#computerHealth');
+    };
+
+    // Update health based on remaining health percent
+    healthBar.style.width = remainingHealthPoints / 5 * 100 + '%';
+}
+
+
 // Function to add outcome to list
 function outcome(message) {
-    let roundsList = document.getElementById("rounds");
-    let li = document.createElement('li');
-    li.innerText = message;
-    roundsList.appendChild(li);
-}
+    roundOutcome.innerText = message;
+};
 
-// Function to play game
-// let playerWinCount = 0, computerWinCount = 0;
-function game() {  
 
-    let playerWin = document.getElementById("playerWinCount");
-    let computerWin = document.getElementById("computerWinCount");
-    let player = getPlayerChoice();
-    let computer = getComputerChoice();
+// Function to display winner
+function displayWinner(winner) {
 
-    if (playRound(player, computer) == "Win") {
-        outcome(`You Won! You played ${player} while Computer played ${computer}.`);
-        playerWinCount++;
-    }  else if (playRound(player, computer) == "Lose") {
-        outcome(`You Lost! Computer played ${computer} while you played ${player}.`);
-        computerWinCount++;
-    } else {
-        outcome(`It's a Draw! Both you and Computer played ${computer}.`);
-    }
+    let rockBtn = document.querySelector('#Rock');
+    let paperBtn = document.querySelector('#Paper');
+    let scissorsBtn = document.querySelector('#Scissors');
 
-    playerWin.innerHTML = playerWinCount;
-    computerWin.innerHTML = computerWinCount;
-}
+    // Disable buttons
+    rockBtn.disabled = true;
+    paperBtn.disabled = true;
+    scissorsBtn.disabled = true;
+
+    outcome(`${winner} won!`);
+
+};
+
 
 // Restart Game
 function restart() {
-    let roundsList = document.getElementById("rounds");
-    let playerWin = document.getElementById("playerWinCount");
-    let computerWin = document.getElementById("computerWinCount");
-    let playerSelection = document.getElementById("playerOption");
 
-    // Clear user input
-    playerSelection.value = "";
+    // Reset health
+    playerHealthCount = 5;
+    computerHealthCount = 5;
 
-    // Reset counter
-    playerWinCount = 0, computerWinCount = 0;
-    playerWin.innerHTML = playerWinCount;
-    computerWin.innerHTML = computerWinCount;
+    // Remove Health bars
+    while (leftBody.firstChild) {
+        leftBody.removeChild(leftBody.firstChild);
+    };
+    while (rightBody.firstChild) {
+        rightBody.removeChild(rightBody.firstChild);
+    }
 
-    // Reset list
-    roundsList.innerHTML = "";
+
+    // Remove options and outcome
+    let optionExist = document.querySelector('#optionDiv');
+    if (optionExist != null) {
+        midBody.removeChild(optionExist);
+    };
+    roundOutcome.innerHTML = '';
+
 }
+
+
+// Start/Reset Game on click
+startResetBtn.addEventListener('click', gameStartReset);

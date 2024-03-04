@@ -1,6 +1,42 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
+}
+
+.mainBody, .leftBody, .midBody, .rightBody {
+    display: flex;
+}
+
+.mainBody {
+    width: 100%;
+    height: 100%;
+    align-items: stretch;
+    justify-content: space-evenly;
+}
+
+.leftBody, .midBody, .rightBody {
+    flex-direction: column;
+    align-self: center;
+}
+
+#playerHealthBackground, #computerHealthBackground {
+    width: 100px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: lightgray;
+}
+
+#playerHealth, #computerHealth {
+    width: 100px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: green;
 }
 
 .menuOptions {
@@ -12,6 +48,11 @@ button {
     margin: 0px 10px;
 }
 
+#startResetBtn {
+    height: 30px;
+    width: 70px;
+}
+
 #resetGame {
     margin-right: 0;
 }
@@ -19,9 +60,23 @@ button {
 #optionDiv {
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
-/* .body {
+#Rock, #Paper, #Scissors {
+    height: 100px;
+    width: 100px;
+}
+
+#choices {
     display: flex;
-    flex-direction: column;
-} */
+    flex-direction: row;
+}
+
+#pChoice, #cChoice {
+    height: 100px;
+    width: 100px;
+    background-color: black;
+    border-radius: 5px;
+    
+}
