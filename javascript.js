@@ -31,7 +31,7 @@ function createOption(optionValue) {
 
     // Attach Image
     let image = document.createElement('img');
-    image.src = '/images/' + optionValue.toLowerCase()+'-clipart.png';
+    image.src = './images/' + optionValue.toLowerCase()+'-clipart.png';
     image.alt = 'Image of ' + optionValue;
     image.style.width = '100%';
     image.style.height = '30%';
@@ -62,7 +62,7 @@ function createProfiles() {
 
     // Player Profile
     let playerImg = document.createElement('img');
-    playerImg.src = '/images/hero-blue.png';
+    playerImg.src = './images/hero-blue.png';
     playerImg.alt = 'Image of cartoon man in blue cape';
     playerImg.style.width = '100%';
     playerImg.style.height = '100%';
@@ -87,7 +87,7 @@ function createProfiles() {
 
     // Computer Profile
     let computerImg = document.createElement('img');
-    computerImg.src = '/images/hero-red.png';
+    computerImg.src = './images/hero-red.png';
     computerImg.alt = 'Image of cartoon man in red cape';
     computerImg.style.width = '100%';
     computerImg.style.height = '100%';
