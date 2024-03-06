@@ -1,7 +1,9 @@
 # rock-paper-scissors
 
-Rock Image: https://clipart-library.com/clipart/1603206.htm  
+Rock Image: https://www.rawpixel.com/image/9011793/png-hand-cartoon   
 
-Paper Image: https://www.clipartmax.com/middle/m2i8K9b1i8i8b1m2_paper-clip-art-free-clipart-images-3-lined-paper-transparent-clipart/  
+Paper Image: https://www.rawpixel.com/image/9011776/png-paper-hand  
 
-Scissors Image: https://clipart-library.com/clip-art/scissors-clipart-transparent-18.htm  
+Scissors Image: https://www.rawpixel.com/image/9011706/png-hand-cartoon  
+
+Hero Image: https://pixabay.com/vectors/superhero-super-hero-hero-figure-304713/  

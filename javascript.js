@@ -3,9 +3,11 @@ const startResetBtn = document.querySelector('#startResetBtn');
 const leftBody = document.querySelector('.leftBody');
 const midBody = document.querySelector('.midBody');
 const rightBody = document.querySelector('.rightBody');
-const playerChoice = document.querySelector("#pChoice");
-const computerChoice = document.querySelector("#cChoice");
+const playerChoiceContainer = document.querySelector("#pChoiceContainer");
+const computerChoiceContainer = document.querySelector("#cChoiceContainer");
 const roundOutcome = document.querySelector("#roundOutcome");
+let pChoice;
+let cChoice;
 let playerHealthCount = 5;
 let computerHealthCount = 5;
 
@@ -32,7 +34,7 @@ function createOption(optionValue) {
     image.src = '/images/' + optionValue.toLowerCase()+'-clipart.png';
     image.alt = 'Image of ' + optionValue;
     image.style.width = '100%';
-    image.style.height = '100%';
+    image.style.height = '30%';
     option.appendChild(image);
 
     return option;
@@ -40,24 +42,33 @@ function createOption(optionValue) {
 
 // Function to create all Rock, Paper, Scissors options
 function createOptions() {
-    let optionDiv = document.createElement('div');
-    optionDiv.id = 'optionDiv';
+    let options = document.createElement('div');
+    options.id = 'options';
 
     let rockBtn = createOption('Rock');
     let paperBtn = createOption('Paper');
     let scissorsBtn = createOption('Scissors');
 
-    optionDiv.appendChild(rockBtn);
-    optionDiv.appendChild(paperBtn);
-    optionDiv.appendChild(scissorsBtn);
+    options.appendChild(rockBtn);
+    options.appendChild(paperBtn);
+    options.appendChild(scissorsBtn);
 
-    // midBody.appendChild(optionDiv);
-    midBody.insertBefore(optionDiv, roundOutcome);
+    midBody.append(options);
 };
 
 
 // Function to create Player and Computer Profiles
 function createProfiles() {
+
+    // Player Profile
+    let playerImg = document.createElement('img');
+    playerImg.src = '/images/hero-blue.png';
+    playerImg.alt = 'Image of cartoon man in blue cape';
+    playerImg.style.width = '100%';
+    playerImg.style.height = '100%';
+    playerImg.id = 'playerImg';
+    leftBody.appendChild(playerImg);
+
     // Player Health Background
     let playerHealthBackground = document.createElement("div");
     playerHealthBackground.id = 'playerHealthBackground';
@@ -68,6 +79,21 @@ function createProfiles() {
     playerHealth.id = 'playerHealth';
     playerHealthBackground.appendChild(playerHealth);
 
+    // Player Health Counter
+    let playerHealthCounter = document.createElement("div");
+    playerHealthCounter.id = 'playerHealthCounter';
+    playerHealthCounter.innerHTML = playerHealthCount;
+    playerHealthBackground.appendChild(playerHealthCounter);
+
+    // Computer Profile
+    let computerImg = document.createElement('img');
+    computerImg.src = '/images/hero-red.png';
+    computerImg.alt = 'Image of cartoon man in red cape';
+    computerImg.style.width = '100%';
+    computerImg.style.height = '100%';
+    computerImg.id = 'computerImg';
+    rightBody.appendChild(computerImg);
+
     // Computer Health Background
     let computerHealthBackground = document.createElement("div");
     computerHealthBackground.id = 'computerHealthBackground';
@@ -77,6 +103,12 @@ function createProfiles() {
     let computerHealth = document.createElement("div");
     computerHealth.id = 'computerHealth';
     computerHealthBackground.appendChild(computerHealth);
+
+    // Computer Health Counter
+    let computerHealthCounter = document.createElement("div");
+    computerHealthCounter.id = 'computerHealthCounter';
+    computerHealthCounter.innerHTML = computerHealthCount;
+    computerHealthBackground.appendChild(computerHealthCounter);
 
 }
 
@@ -117,11 +149,13 @@ let gameStartReset = function() {
 // Function to decide winner of round, add outcome and check for game winner
 function playRound(playerSelection, computerSelection) {
 
-    console.log('P: ', playerSelection, 'C: ', computerSelection);
+    // Show Player and Computer Choice
+    displaySelection(playerSelection, 'Player');
+    displaySelection(computerSelection, 'Computer');
 
     // Check Draw condition
     if (playerSelection == computerSelection) {
-        outcome(`It's a Draw! Both You and Computer played ${playerSelection}.`);
+        outcome(`Draw! Both You and Computer played ${playerSelection}.`);
         return;
     }
 
@@ -139,7 +173,7 @@ function playRound(playerSelection, computerSelection) {
         if (computerHealthCount == 0) {
             displayWinner('You');
         } else {
-            outcome(`You Won! You played ${playerSelection} while Computer played ${computerSelection}.`);
+            outcome(`Win! You played ${playerSelection} while Computer played ${computerSelection}.`);
         }
     } else {
         playerHealthCount--;
@@ -147,24 +181,62 @@ function playRound(playerSelection, computerSelection) {
         if (playerHealthCount == 0) {
             displayWinner('Computer');
         } else {
-            outcome(`You Lost! You played ${playerSelection} while Computer played ${computerSelection}.`);
+            outcome(`Lost! You played ${playerSelection} while Computer played ${computerSelection}.`);
         }
     }
 };
 
 
-// Function to change health bar
+// Function to update health bar
 function takeDamage(damaged, remainingHealthPoints) {
 
     let healthBar;
+    let healthRemain;
     if (damaged == 'Player') {
         healthBar = document.querySelector('#playerHealth');
+        healthRemain = document.querySelector('#playerHealthCounter');
     } else {
         healthBar = document.querySelector('#computerHealth');
+        healthRemain = document.querySelector('#computerHealthCounter');
     };
 
     // Update health based on remaining health percent
     healthBar.style.width = remainingHealthPoints / 5 * 100 + '%';
+    healthRemain.innerHTML = remainingHealthPoints;
+}
+
+
+// Function to display and update player and computer selection
+function displaySelection(selection, participant) {
+
+    let selectionImg = document.createElement('img');
+    selectionImg.src = '/images/' + selection.toLowerCase()+'-clipart.png';
+    selectionImg.alt = 'Image of ' + selection;
+    selectionImg.style.width = '100%';
+    selectionImg.style.height = '100%';
+
+    let choiceExists;
+    if (participant == 'Player') {
+        choiceExists = document.querySelector('#pChoice');
+        selectionImg.id = 'pChoice';
+        if (choiceExists != null) {
+            playerChoiceContainer.replaceChild(selectionImg, choiceExists);
+        } else {
+            playerChoiceContainer.appendChild(selectionImg);
+        }
+        
+    }
+    
+    if (participant == 'Computer') {
+        choiceExists = document.querySelector('#cChoice');
+        selectionImg.id = 'cChoice';
+        if (choiceExists != null) {
+            computerChoiceContainer.replaceChild(selectionImg, choiceExists);
+        } else {
+            computerChoiceContainer.appendChild(selectionImg);
+        }
+    }
+    
 }
 
 
@@ -174,7 +246,7 @@ function outcome(message) {
 };
 
 
-// Function to display winner
+// Function to display winner and disable button inputs
 function displayWinner(winner) {
 
     let rockBtn = document.querySelector('#Rock');
@@ -206,11 +278,16 @@ function restart() {
         rightBody.removeChild(rightBody.firstChild);
     }
 
-
-    // Remove options and outcome
-    let optionExist = document.querySelector('#optionDiv');
+    // Remove selection, options and outcome
+    let optionExist = document.querySelector('#options');
     if (optionExist != null) {
         midBody.removeChild(optionExist);
+    };
+    while (playerChoiceContainer.firstChild) {
+        playerChoiceContainer.removeChild(playerChoiceContainer.firstChild);
+    };
+    while (computerChoiceContainer.firstChild) {
+        computerChoiceContainer.removeChild(computerChoiceContainer.firstChild);
     };
     roundOutcome.innerHTML = '';
 
