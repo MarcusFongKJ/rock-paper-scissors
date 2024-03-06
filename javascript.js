@@ -210,7 +210,7 @@ function takeDamage(damaged, remainingHealthPoints) {
 function displaySelection(selection, participant) {
 
     let selectionImg = document.createElement('img');
-    selectionImg.src = '/images/' + selection.toLowerCase()+'-clipart.png';
+    selectionImg.src = './images/' + selection.toLowerCase()+'-clipart.png';
     selectionImg.alt = 'Image of ' + selection;
     selectionImg.style.width = '100%';
     selectionImg.style.height = '100%';
