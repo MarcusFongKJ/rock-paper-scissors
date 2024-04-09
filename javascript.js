@@ -1,5 +1,5 @@
 // Variables
-const startResetBtn = document.querySelector('#startResetBtn');
+const headerDiv = document.querySelector('.header');
 const leftBody = document.querySelector('.leftBody');
 const midBody = document.querySelector('.midBody');
 const rightBody = document.querySelector('.rightBody');
@@ -10,6 +10,7 @@ let pChoice;
 let cChoice;
 let playerHealthCount = 5;
 let computerHealthCount = 5;
+let startResetBtn = document.querySelector('#startResetBtn');
 
 
 // Array of options that are valid
@@ -112,16 +113,53 @@ function createProfiles() {
 
 }
 
+
+function createStartReset(startReset) {
+    let menuDiv = document.createElement('div');
+    menuDiv.className = 'menuOptions';
+    let menuButton = document.createElement('button');
+    menuButton.id = 'startResetBtn';
+    menuButton.innerHTML = startReset;
+    menuButton.onclick = gameStartReset;
+    menuDiv.appendChild(menuButton);
+    return menuDiv;
+}
+
+
+function moveStartReset(startReset) {
+
+    let menuOption = document.querySelector('.menuOptions');
+
+    if (startReset=='Start!') {
+        // Move Reset Button to Header if Start is clicked
+        // remove button from center and add to top
+        midBody.removeChild(menuOption);
+        let resetButton = createStartReset('Reset!');
+        headerDiv.appendChild(resetButton);
+    } else {
+        // Move Start Button to Center of Screen if Reset is clicked
+        headerDiv.removeChild(menuOption);
+        let startButton = createStartReset('Start!');
+        midBody.prepend(startButton);
+    }
+
+}
+
 // Function to Start/Reset the Game
 let gameStartReset = function() {
+
+    let startResetBtn = document.querySelector('#startResetBtn');
+    console.log(startResetBtn);
 
     // Update button to Reset once Game starts, or Start when Game is Reset
     if (startResetBtn.textContent == 'Start!') {
         startResetBtn.textContent = 'Reset!';
         createOptions();
-        createProfiles()
+        createProfiles();
+        moveStartReset('Start!');
     } else {
         startResetBtn.textContent = 'Start!';
+        moveStartReset('Reset!');
         restart()
         return;
     }
@@ -290,6 +328,9 @@ function restart() {
         computerChoiceContainer.removeChild(computerChoiceContainer.firstChild);
     };
     roundOutcome.innerHTML = '';
+
+    // Move Reset back to center
+
 
 }
 
